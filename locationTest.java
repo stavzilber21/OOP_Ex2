@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class locationTest {
 
-    static location l1 = new location(1,2,0);
-    static location l2 = new location(2,1,0);
+    location l1 = new location(1,2,0);
+    location l2 = new location(2,1,0);
 
     @Test
     void x() {
@@ -25,29 +25,6 @@ class locationTest {
         assertEquals(l2.z(),0);
     }
 
-//    @Test
-//    void setX() {
-//        l1.setX(0);
-//        l2.setX(1);
-//        assertEquals(l1.x(),0);
-//        assertEquals(l2.x(),1);
-//    }
-//
-//    @Test
-//    void setY() {
-//        l1.setY(0);
-//        l2.setY(1);
-//        assertEquals(l1.y(),0);
-//        assertEquals(l2.y(),1);
-//    }
-//
-//    @Test
-//    void setZ() {
-//        l1.setZ(0);
-//        l2.setZ(1);
-//        assertEquals(l1.z(),0);
-//        assertEquals(l2.z(),1);
-//    }
 
     @Test
     void distance() {

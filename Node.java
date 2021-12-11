@@ -1,50 +1,74 @@
+import api.EdgeData;
 import api.GeoLocation;
 import api.NodeData;
 
-import java.util.Comparator;
+import java.util.*;
 
-public class Node implements NodeData , Comparator<Node> {
+public class Node implements NodeData, Comparator<Node> {
     private GeoLocation location;
     private double weight;
     private int key;
     private int tag;
+    private List<EdgeData> edges;
     private String info;
 
-    public Node(double x, double y, double z, double weight, int key){
-        GeoLocation location = new location(x,y,z);
-        this.location=location;
-        this.weight=weight;
-        this.key=key;
-        this.tag=tag;
-        this.info=info;
+    public Node(double x, double y, double z, double weight, int key) {
+        GeoLocation location = new location(x, y, z);
+        this.location = location;
+        this.weight = weight;
+        this.key = key;
+        this.edges = new LinkedList<>();
+        this.tag = tag;
+        this.info = info;
+        this.edges = new ArrayList<>();
     }
 
-    public Node(GeoLocation location, double weight, int key){
-        this.location=location;
-        this.weight=weight;
-        this.key=key;
-        this.tag=tag;
-        this.info=info;
-    }
-    public Node(GeoLocation location, double weight, int key, int tag, String info){
-        this.location=location;
-        this.weight=weight;
-        this.key=key;
-        this.tag=tag;
-        this.info=info;
+    public Node(GeoLocation location, double weight, int key) {
+        this.location = location;
+        this.weight = weight;
+        this.key = key;
+        this.tag = tag;
+        this.info = info;
+        this.edges = new ArrayList<>();
     }
 
-    public Node (Node other){
+    public Node(GeoLocation location, double weight, int key, int tag, String info) {
+        this.location = location;
+        this.weight = weight;
+        this.key = key;
+        this.tag = tag;
+        this.info = info;
+        this.edges = new ArrayList<>();
+    }
+
+    public Node(Node other) {
         this.location = new location((location) other.location);
-        this.weight=other.weight;
-        this.key=other.key;
-        this.tag=other.tag;
-        this.info=other.info;
+        this.weight = other.weight;
+        this.key = other.key;
+        this.tag = other.tag;
+        this.info = other.info;
+        this.edges=other.edges;
     }
 
 
     public Node() {
-        this.weight=Double.MAX_VALUE;
+        this.weight = Double.MAX_VALUE;
+    }
+
+    public void addToList(EdgeData e) {
+        this.edges.add(e);
+    }
+
+    public List<EdgeData> getEdges() {
+        return edges;
+    }
+
+    public Iterator<EdgeData> getIter() {
+        return this.edges.iterator();
+    }
+
+    public void setEdges(List<EdgeData> edges) {
+        this.edges = edges;
     }
 
     @Override
@@ -59,7 +83,7 @@ public class Node implements NodeData , Comparator<Node> {
 
     @Override
     public void setLocation(GeoLocation p) {
-        this.location=p;
+        this.location = p;
     }
 
     @Override
@@ -69,7 +93,7 @@ public class Node implements NodeData , Comparator<Node> {
 
     @Override
     public void setWeight(double w) {
-        this.weight=w;
+        this.weight = w;
     }
 
     @Override
@@ -79,7 +103,7 @@ public class Node implements NodeData , Comparator<Node> {
 
     @Override
     public void setInfo(String s) {
-        this.info=s;
+        this.info = s;
     }
 
     @Override
@@ -89,18 +113,25 @@ public class Node implements NodeData , Comparator<Node> {
 
     @Override
     public void setTag(int t) {
-      this.tag=t;
+        this.tag = t;
     }
 
     @Override
     public int compare(Node a, Node b) {
-        if (a.weight<b.weight) {
+        if (a.weight < b.weight) {
             return -1;
         }
-        if (a.weight>b.weight){
+        if (a.weight > b.weight) {
             return 1;
         }
         return 0;
+    }
+    public void removeEdge(int src, int dest){
+        for(int i=0; i<this.edges.size(); i++) {
+            if(edges.get(i).getDest()==dest && edges.get(i).getSrc()==src) {
+                this.edges.remove(edges.get(i));
+            }
+        }
     }
 
     @Override

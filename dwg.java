@@ -67,6 +67,7 @@ public class dwg implements DirectedWeightedGraph {
         edge e = new edge(s,d,w,0,"");
         this.Edges.put(p,e);
         MC++;
+        ((Node)this.Nodes.get(src)).addToList(e);
     }
 
     @Override
@@ -94,14 +95,25 @@ public class dwg implements DirectedWeightedGraph {
 
     @Override
     public Iterator<EdgeData> edgeIter(int node_id) {
-        HashMap<Point2D, EdgeData> iter =new HashMap<Point2D, EdgeData>();
-        for (int i = 0 ; i<Edges.size();i++){
-            if (Edges.get(i).getSrc() == node_id){
-                Point2D p =new Point(Edges.get(i).getSrc(),Edges.get(i).getDest());
-                iter.put(p,Edges.get(i));
-            }}
-        return iter.values().iterator();
+        Iterator<EdgeData> iterator = Edges.values().iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            for (int i = 0; i < this.Edges.size(); i++) {
+                if ( this.Edges.get(i) != null &&this.Edges.get(i).getSrc() != node_id) {
+                    iterator.remove();
+                }
+            }
+        }
+        return iterator;
     }
+//        HashMap<Point2D, EdgeData> iter =new HashMap<Point2D, EdgeData>();
+//        for (int i = 0 ; i<this.Edges.size();i++){
+//            if (this.Edges.get(i).getSrc() == node_id){
+//                Point2D p =new Point(this.Edges.get(i).getSrc(),this.Edges.get(i).getDest());
+//                iter.put(p,this.Edges.get(i));
+//            }}
+//        return iter.values().iterator();
+
 
     @Override
     public NodeData removeNode(int key) {
@@ -113,6 +125,15 @@ public class dwg implements DirectedWeightedGraph {
             }
         }
         MC++;
+        for(int i=0; i<Nodes.size();i++){
+            Iterator iterSrc=((Node)Nodes.get(i)).getIter();
+            while(iterSrc.hasNext()){
+                edge temp = (edge)iterSrc.next();
+                if(temp.getDest()==key){
+                    ((Node) Nodes.get(i)).getEdges().remove(temp);
+                }
+            }
+        }
         return this.Nodes.remove(key);
     }
 
@@ -123,6 +144,7 @@ public class dwg implements DirectedWeightedGraph {
         edge copy = (edge) getEdge(src, dest);
         this.Edges.remove(p);
         MC++;
+        ((Node)Nodes.get(src)).removeEdge(src,dest);
         return copy;
     }
 
@@ -191,5 +213,14 @@ public class dwg implements DirectedWeightedGraph {
 
     public void setNodes(Map<Integer, NodeData> Nodes){
         this.Nodes=Nodes;
+    }
+
+    @Override
+    public String toString() {
+        return "dwg{" +
+                "Nodes=" + Nodes +
+                ", MC=" + MC +
+                ", Edges=" + Edges +
+                '}';
     }
 }
