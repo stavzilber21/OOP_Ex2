@@ -42,6 +42,7 @@ public class Ex2 {
     public static DirectedWeightedGraphAlgorithms getGrapgAlgo(String json_file) {
         DirectedWeightedGraphAlgorithms ans = new dwgAlgorithm();
         ans.load(json_file);
+        ans.save("C:\\Users\\User\\IdeaProjects\\graph\\src\\gui");
 
         return ans;
     }

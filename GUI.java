@@ -15,6 +15,8 @@ import java.io.File;
 import static gui.buttons.MenuBarExample.scaleImageIcon;
 
 public class GUI  extends JFrame implements KeyListener, ActionListener {
+    BorderLayout border = new BorderLayout();
+    Container cont = getContentPane();
     drawGraph panel;
     dwgAlgorithm graph;
     JMenuBar menuBar;
@@ -47,6 +49,8 @@ public class GUI  extends JFrame implements KeyListener, ActionListener {
 //        panel =new drawGraph(graph);
 //        this.add(panel);
         graph=new dwgAlgorithm();
+//        cont.add(panel, BorderLayout.CENTER);
+//        cont.setLayout(border);
 
         this.setSize(Toolkit.getDefaultToolkit().getScreenSize());
         loadIcon = new ImageIcon("./resources/load.jpg");
@@ -111,16 +115,17 @@ public class GUI  extends JFrame implements KeyListener, ActionListener {
                 System.out.println("you loaded a file");
             }
         }
-            if (e.getSource() == saveItem) {
+        if (e.getSource() == saveItem) {
+            //graph.save();
+            System.out.println("you saved a file");
+        }
+        if (e.getSource() == exitItem) {
+            System.exit(0);
+        }
 
-                System.out.println("you saved a file");
-            }
-            if (e.getSource() == exitItem) {
-                System.exit(0);
-            }
 
     }
-//    public void paint(Graphics g){
+    //    public void paint(Graphics g){
 //            for (int i = 0; i < g.getGraph().nodeSize(); i++) {
 //                //getContentPane().setBackground(Color.RED);
 //                g.setColor(new Color(234, 26, 171));

@@ -334,7 +334,7 @@ public class dwgAlgorithm implements DirectedWeightedGraphAlgorithms{
     @Override
     public boolean load(String file) {
         try {
-            Object ob = new JSONParser().parse(new FileReader("src/data/G1.json"));
+            Object ob = new JSONParser().parse(new FileReader(file));
             if (ob == null)
                 throw new Exception("Error");
             JSONObject js = (JSONObject) ob;
