@@ -105,7 +105,6 @@ public class dwgAlgorithm implements DirectedWeightedGraphAlgorithms{
         Iterator<EdgeData> iter = GRAPH.edgeIter();
         while (iter.hasNext()) {
             edge temp = (edge) iter.next();
-            temp.p();
             Node source = (Node) GRAPH.getNode(temp.getSrc());
             Node destination =  (Node) GRAPH.getNode(temp.getDest());
             edge edge = new edge(destination,source, temp.getWeight());

@@ -11,8 +11,12 @@ public class drawGraph extends JPanel{
     private List<NodeData> Nodes;
     private List<EdgeData> Edges;
     private dwgAlgorithm graph;
+    boolean toPrint;
+    String message;
+
     public drawGraph(dwgAlgorithm graph) {
         super();
+        toPrint=false;
         Nodes = new ArrayList<>();
         Edges =new ArrayList<>();
         this.setBackground(new Color(21, 218, 203));
@@ -54,7 +58,6 @@ public class drawGraph extends JPanel{
         double scaleY = getSize().getHeight() / absY;
 
         for (int i = 0; i < Edges.size(); i++) {
-            //g.setColor(new Color(40, 234, 26));
             edge e = (edge) Edges.get(i);
             Node src = (Node) Nodes.get(e.getSrc());
             Node dest = (Node) Nodes.get(e.getDest());
@@ -64,7 +67,6 @@ public class drawGraph extends JPanel{
             double dest_y = (dest.getLocation().y() * scaleY) % getSize().getHeight();
             Graphics2D g2 = (Graphics2D) g;
             g2.setStroke(new BasicStroke(3));
-            //g.drawLine((int)src_x,(int)src_y,(int)dest_x,(int)dest_y);
             g2.setColor(new Color(234, 26, 137));
             g2.draw(new Line2D.Float((int) src_x, (int) src_y, (int) dest_x, (int) dest_y));
 
@@ -76,11 +78,7 @@ public class drawGraph extends JPanel{
         }
     }
 
-    public void reset(){
-        Nodes = new ArrayList<>();
-        Edges = new ArrayList<>();
-        this.repaint();
-    }
+
 
     @Override
     public Dimension getPreferredSize() {

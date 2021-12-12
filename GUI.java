@@ -15,8 +15,6 @@ import java.io.File;
 import static gui.buttons.MenuBarExample.scaleImageIcon;
 
 public class GUI  extends JFrame implements KeyListener, ActionListener {
-    BorderLayout border = new BorderLayout();
-    Container cont = getContentPane();
     drawGraph panel;
     dwgAlgorithm graph;
     JMenuBar menuBar;
@@ -99,6 +97,7 @@ public class GUI  extends JFrame implements KeyListener, ActionListener {
         tspItem.addActionListener(this);
         this.setJMenuBar(menuBar);
         this.setVisible(true);
+
     }
 
     @Override
@@ -113,7 +112,9 @@ public class GUI  extends JFrame implements KeyListener, ActionListener {
                 panel =new drawGraph(graph);
                 this.add(panel);
                 System.out.println("you loaded a file");
+                this.reset();
             }
+
         }
         if (e.getSource() == saveItem) {
             //graph.save();
@@ -122,18 +123,46 @@ public class GUI  extends JFrame implements KeyListener, ActionListener {
         if (e.getSource() == exitItem) {
             System.exit(0);
         }
+        if (e.getSource() == isConnectedItem) {
+            boolean isConnected = graph.isConnected();
+            JOptionPane.showMessageDialog(this, isConnected ? "The graph is connected ": "The graph isn't connected");
+            System.out.println("the graph is connected? " + graph.isConnected());
+        }
+        if(e.getSource() == shortestPathDistItem) {
+            JButton button = new JButton("Submit");
+            this.add(button);
+            button.addActionListener(this);
+            JTextField textField = new JTextField();
+            textField.setPreferredSize(new Dimension(100, 40));
+            textField.setFont(new Font("Consolas", Font.PLAIN, 20));
+            textField.setForeground(new Color(0x00FF00));
+            textField.setBackground(Color.black);
+            textField.setCaretColor(Color.white);
+            textField.setText("Please enter a source node: ");
+            this.add(textField);
+            this.pack();
+            this.setVisible(true);
+            String src = textField.getText();
+            this.remove(textField);
+
+            JTextField textField1 = new JTextField();
+            textField1.setText("Please enter a destination node: ");
+            this.add(textField);
+            this.pack();
+            this.setVisible(true);
+            String dest = textField1.getText();
+            JOptionPane.showMessageDialog(this, graph.shortestPathDist(Integer.valueOf(src), Integer.valueOf(dest)));
+
+        }
 
 
     }
-    //    public void paint(Graphics g){
-//            for (int i = 0; i < g.getGraph().nodeSize(); i++) {
-//                //getContentPane().setBackground(Color.RED);
-//                g.setColor(new Color(234, 26, 171));
-//                Node n = (Node) graph.getGraph().getNode(i);
-//                g.fillOval((int) n.getLocation().x(), (int) n.getLocation().y(), 20, 20);
-//
-//            }
-//        }
+    public void reset(){
+        panel =new drawGraph(graph);
+        this.add(panel);
+        this.repaint();
+    }
+
     @Override
     public void keyTyped(KeyEvent e) {
 
