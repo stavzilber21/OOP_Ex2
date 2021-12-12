@@ -20,3 +20,5 @@ When finished, in the ‘File’ menu again, choose ‘Exit’. This will safely
 
 
 Below is the project’s UML diagram, including interfaces, classes, test classes and functions:
+
+<img width = "640" alt = "UML" src="https://user-images.githubusercontent.com/93096648/145727197-3d5c655b-dbed-486d-8e39-9f041900a06a.png">
