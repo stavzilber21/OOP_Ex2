@@ -14,6 +14,7 @@ import java.util.List;
 
 public class dwgAlgorithm implements DirectedWeightedGraphAlgorithms{
     private DirectedWeightedGraph GRAPH;
+    private int INFINITI = 999999;
     public dwgAlgorithm(){
 
     }
@@ -33,10 +34,10 @@ public class dwgAlgorithm implements DirectedWeightedGraphAlgorithms{
 
     @Override
     public DirectedWeightedGraph copy() {
-        HashMap<Integer, NodeData> nodeMap = new HashMap<>();
-        HashMap<Point2D, EdgeData> edgeMap = new HashMap<>();
+        HashMap<Integer, NodeData> NodesMap = new HashMap<>();
+        HashMap<Point2D, EdgeData> EdgesMap = new HashMap<>();
         for(int i = 0; i < GRAPH.nodeSize(); i++){
-            nodeMap.put(i,GRAPH.getNode(i));
+            NodesMap.put(i,GRAPH.getNode(i));
         }
         for(int j = 0; j < GRAPH.edgeSize(); j++){
             if(GRAPH.getNode(j) != null){
@@ -44,13 +45,13 @@ public class dwgAlgorithm implements DirectedWeightedGraphAlgorithms{
                     if(GRAPH.getEdge(j,r) == null){
                         continue;
                     }
-                    Point2D p = new Point(j,r);
-                    edgeMap.put(p,GRAPH.getEdge(j,r));
+                    Point2D point = new Point(j,r);
+                    EdgesMap.put(point,GRAPH.getEdge(j,r));
                 }
             }
         }
-        DirectedWeightedGraph g_copy = new dwg(nodeMap,edgeMap);
-        return g_copy;
+        DirectedWeightedGraph newG = new dwg(NodesMap,EdgesMap);
+        return newG;
     }
 
     public boolean isConnected1() {
@@ -145,139 +146,138 @@ public class dwgAlgorithm implements DirectedWeightedGraphAlgorithms{
             }
         }
     }
-
-//    public HashMap<Point2D, EdgeData> neighbors(int src){
-//        HashMap<Point2D, EdgeData> answer =new HashMap<>();
-//        Iterator<EdgeData> iter = GRAPH.edgeIter();
-//        while(iter.hasNext()){
-//            edge temp = (edge)iter.next();
-//            if(temp.getSrc()==src){
-//                Point2D point = new Point(temp.getSrc(),temp.getDest());
-//                edge t = new edge(temp);
-//                answer.put(point,t);
-//            }
-//        }
-//
-//        return answer;
-//    }
-
-
-    @Override
     public double shortestPathDist(int src, int dest) {
-        double answer = 0.0;
-        int almost = -1;
-        double weight = Double.MAX_VALUE;
-        while(almost!=dest) {
-            Iterator iterSrc = ((Node) GRAPH.getNode(src)).getIter();
-            while (iterSrc.hasNext()) {
-                edge temp = (edge) iterSrc.next();
-                if (((Node) GRAPH.getNode(src)).getEdges().size() == 1) {
-                    weight = temp.getWeight();
-                    src = temp.getDest();
-                } else if (weight > temp.getWeight()) {
-                    weight = temp.getWeight();
-                    src = temp.getDest();
-                }
-            }
-            answer += weight;
-            almost = src;
-        }
-        return answer;
+        double[] ans = temp_Dist(src, dest);
+        return ans[dest];
     }
 
+    public double[] temp_Dist(int src, int dest) {
+        PriorityQueue<Integer> queue = new PriorityQueue<Integer>();
+        double[] dist = new double[GRAPH.nodeSize()];
+        int[] prev = new int[GRAPH.nodeSize()];
+        for (int i = 0; i < GRAPH.nodeSize(); i++) {
+            dist[i] = INFINITI;
+            prev[i] = Integer.MAX_VALUE;
+            queue.add(i);
+        }
+        dist[src] = 0;
+        int u = 0;
+        double updateWeight = 0;
+        while (!queue.isEmpty()) {
+            u = queue.poll();
+            for (int v = 0; v < GRAPH.nodeSize(); v++) {
+                if (GRAPH.getEdge(u, v) == null || queue.contains(v) == false) {
+                    continue;
+                }
+                updateWeight = dist[u] + GRAPH.getEdge(u, v).getWeight();
+                if (updateWeight < dist[v]) {
+                    dist[v] = updateWeight;
+                    prev[v] = u;
+
+                }
+            }
+        }
+        return dist;
+    }
 
     @Override
     public List<NodeData> shortestPath(int src, int dest) {
-        List<NodeData> answer = new ArrayList<>();
-        int almost = -1;
-        double weight = Double.MAX_VALUE;
-        while(almost!=dest) {
-            Iterator iterSrc = ((Node) GRAPH.getNode(src)).getIter();
-            while (iterSrc.hasNext()) {
-                edge temp = (edge) iterSrc.next();
-                if (((Node) GRAPH.getNode(src)).getEdges().size() == 1) {
-                    weight = temp.getWeight();
-                    src = temp.getDest();
-                } else if (weight > temp.getWeight()) {
-                    weight = temp.getWeight();
-                    src = temp.getDest();
+        int[] list_nodes = temp_Path(src, dest);
+        List<NodeData> ans = new LinkedList<>();
+        for (int i = src + 1; i < GRAPH.nodeSize(); i++) {
+            ans.add(GRAPH.getNode(list_nodes[i]));
+        }
+        return ans;
+    }
+
+    public int[] temp_Path(int src, int dest) {
+        PriorityQueue<Integer> queue = new PriorityQueue<Integer>();
+        double[] dist = new double[GRAPH.nodeSize()];
+        int[] prev = new int[GRAPH.nodeSize()];
+        for (int i = 0; i < GRAPH.nodeSize(); i++) {
+            dist[i] = INFINITI;
+            prev[i] = Integer.MAX_VALUE;
+            queue.add(i);
+        }
+        dist[src] = 0;
+        int u = 0;
+        double updateWeight = 0;
+        while (!queue.isEmpty()) {
+            u = queue.poll();
+            for (int v = 0; v < GRAPH.nodeSize(); v++) {
+                if (GRAPH.getEdge(u, v) == null || queue.contains(v) == false) {
+                    continue;
+                }
+                updateWeight = dist[u] + GRAPH.getEdge(u, v).getWeight();
+                if (updateWeight < dist[v]) {
+                    dist[v] = updateWeight;
+                    prev[v] = u;
+
                 }
             }
-            System.out.println(((Node) GRAPH.getNode(src)).getKey());
-            answer.add(((Node) GRAPH.getNode(src)));
-            almost = src;
+        }
+        return prev;
+    }
+
+
+//    @Override
+//    public NodeData center() {
+//        if (!this.isConnected()) {
+//            return null;
+//        }
+//        double max;
+//        double min = Double.MAX_VALUE;
+//        NodeData centerOfGraph = null;
+//        for (Integer me :((dwg) this.getGraph()).getNodes().keySet()) {
+//            Node node = (Node) GRAPH.getNode(me);
+//            max = Double.MIN_VALUE;
+//            for (Integer me1 :((dwg) this.getGraph()).getNodes().keySet()) {
+//                Node node1 = (Node) GRAPH.getNode(me1);
+//                if (node1.getKey() != node.getKey()) {
+//                    double temp = shortestPathDist(node.getKey(), node1.getKey());
+//                    if (temp > max) {
+//                        max = temp;
+//                    }
+//                }
+//            }
+//            if (max < min) {
+//                min = max;
+//                centerOfGraph = node;
+//            }
+//        }
+//        return centerOfGraph;
+//    }
+    @Override
+    public NodeData center() {
+        if (!isConnected()){
+            return null;
+        }
+        double min = Double.MAX_VALUE;
+        NodeData answer = null;
+
+        for(int i =0; i<GRAPH.nodeSize();i++){
+            double center = centerOfNode(GRAPH.getNode(i));
+            if(center<min){
+                min = center;
+                answer = GRAPH.getNode(i);
+            }
         }
         return answer;
     }
 
-    @Override
-    public NodeData center() {
-//        if (!this.isConnected()) {
-//            return null;
-//        }
-        double max;
-        double min = Double.MAX_VALUE;
-        NodeData centerOfGraph = null;
-        for (Integer me :((dwg) this.getGraph()).getNodes().keySet()) {
-            Node node = (Node) GRAPH.getNode(me);
-            max = Double.MIN_VALUE;
-            for (Integer me1 :((dwg) this.getGraph()).getNodes().keySet()) {
-                Node node1 = (Node) GRAPH.getNode(me1);
-                if (node1.getKey() != node.getKey()) {
-                    double temp = shortestPathDist(node.getKey(), node1.getKey());
-                    if (temp > max) {
-                        max = temp;
-                    }
+    private double centerOfNode(NodeData node){
+        double max = Double.MIN_VALUE;
+        //for(int i=0; i<GRAPH.nodeSize();i++){
+        for (Integer key :((dwg) this.getGraph()).getNodes().keySet()) {
+            if (key!=node.getKey()){
+                double temp = shortestPathDist(key,node.getKey());
+                if (temp>max){
+                    max = temp;
                 }
             }
-            if (max < min) {
-                min = max;
-                centerOfGraph = node;
-            }
         }
-        return centerOfGraph;
+        return max;
     }
-//    @Override
-//    public NodeData center() {
-////        if (!isConnected()){
-////            return null;
-////        }
-//        double min = Double.MAX_VALUE;
-//        NodeData answer = null;
-//
-//        for(int i =0; i<GRAPH.nodeSize();i++){
-//            if(centerOfNode(GRAPH.getNode(i))<min){
-//                min = centerOfNode(GRAPH.getNode(i));
-//                answer = GRAPH.getNode(i);
-//            }
-//        }
-//        return answer;
-//    }
-//
-//    private double longestPath(NodeData node){
-//        double answer = 0.0;
-//        for(int i=0; i<GRAPH.nodeSize();i++){
-//            if(shortestPathDist(node.getKey(), i)>answer){
-//                answer = shortestPathDist(node.getKey(), i);
-//            }
-//        }
-//        System.out.println(answer);
-//        return answer;
-//    }
-//
-//    private double centerOfNode(NodeData node){
-//        double max = Double.MIN_VALUE;
-//        for(int i=0; i<GRAPH.nodeSize();i++){
-////        for (Integer key :((dwg) this.getGraph()).getNodes().keySet()) {
-//            if (i!=node.getKey()){
-//                double temp = shortestPathDist(i , node.getKey());
-//                if (temp>=max){
-//                    max = temp;
-//                }
-//            }
-//        }
-//        return max;
-//    }
 
 
     @Override
@@ -285,32 +285,38 @@ public class dwgAlgorithm implements DirectedWeightedGraphAlgorithms{
         if (!isConnected()){
             return null;
         }
-        List<NodeData> answer=new ArrayList<NodeData>();
-        answer.add(cities.get(0));
-        int curr = 1;
-        for(int i = 1 ; i < cities.size() ; i++){
-            for(int j = 2 ; j < cities.size() ;j++){
-                if(!(j== curr && answer.contains(cities.get(j))) &&
-                        (GRAPH.getEdge(i,answer.get(i).getKey())!=null) &&
-                        (GRAPH.getEdge(j,answer.get(i).getKey())!=null))
-                {
-                    if(GRAPH.getEdge(i,answer.get(i).getKey()).getWeight() >
-                            GRAPH.getEdge(j,answer.get(i).getKey()).getWeight()) {
-                        curr = i;}
-                    else if (j == cities.size()-1) {
-                        answer.add(GRAPH.getNode(curr));
-                        i=1;
-                    }
-
-                    else{
-                        curr=j;}
-                }
-                else {
-                    continue;
+        List<Integer> copy_cities = new ArrayList<>();
+        List<NodeData> result = new ArrayList<>();
+        int same,place;
+        for (int i=0;i<cities.size();i++){
+            copy_cities.add(cities.get(i).getKey());
+        }
+        List<NodeData> little= new ArrayList<>();
+        Node temp = (Node) cities.get(0);
+        result.add(GRAPH.getNode(copy_cities.get(0)));
+        copy_cities.remove(copy_cities.get(0));
+        while (!copy_cities.isEmpty()) {
+            double min =Double.MAX_VALUE;
+            same = -1; place = -1;
+            for (int i = 0; i < copy_cities.size(); i++) {
+                int open = copy_cities.get(i);
+                if (shortestPathDist(temp.getKey(),open)<min){
+                    min = shortestPathDist(temp.getKey(),open);
+                    same = open;
+                    place = i;
                 }
             }
+            little = shortestPath(temp.getKey(),same);
+            while(!little.isEmpty()){
+                result.add(little.get(0));
+                little.remove(0);
+            }
+            int q = copy_cities.get(place);
+            temp = (Node) GRAPH.getNode(q);
+            copy_cities.remove(copy_cities.get(place));
+
         }
-        return answer;
+        return result;
 
     }
 

@@ -1,18 +1,14 @@
-import api.DirectedWeightedGraphAlgorithms;
-import gui.draw.graph.GFrame;
-import gui.draw.graph.GraphPanel;
-import org.json.simple.parser.JSONParser;
+import api.NodeData;
 
+import java.awt.event.*;
+import java.lang.NumberFormatException;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.io.FileReader;
 import java.io.File;
-
-import static gui.buttons.MenuBarExample.scaleImageIcon;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class GUI  extends JFrame implements KeyListener, ActionListener {
     drawGraph panel;
@@ -20,15 +16,19 @@ public class GUI  extends JFrame implements KeyListener, ActionListener {
     JMenuBar menuBar;
     JMenu fileMenu;
     JMenu algoMenu;
+    JMenu dwgMenu;
     JMenuItem loadItem;
     JMenuItem saveItem;
     JMenuItem exitItem;
-    JMenuItem initItem;
     JMenuItem isConnectedItem;
     JMenuItem shortestPathDistItem;
     JMenuItem shortestPathItem;
     JMenuItem centerItem;
     JMenuItem tspItem;
+    JMenuItem addNodeItem;
+    JMenuItem connectItem;
+    JMenuItem removeNodeItem;
+    JMenuItem removeEdgeItem;
     ImageIcon loadIcon;
     ImageIcon saveIcon;
     ImageIcon exitIcon;
@@ -39,62 +39,69 @@ public class GUI  extends JFrame implements KeyListener, ActionListener {
     ImageIcon centerIcon;
     ImageIcon tspIcon;
 
+    JLabel isConnected;
+
     public static void main(String[] args) {
         new GUI();
     }
     public GUI() {
         super();
-//        panel =new drawGraph(graph);
-//        this.add(panel);
         graph=new dwgAlgorithm();
-//        cont.add(panel, BorderLayout.CENTER);
-//        cont.setLayout(border);
 
         this.setSize(Toolkit.getDefaultToolkit().getScreenSize());
         loadIcon = new ImageIcon("./resources/load.jpg");
         saveIcon = new ImageIcon("./resources/save.png");
         exitIcon = new ImageIcon("./resources/exit.jpg");
-        loadIcon = scaleImageIcon(loadIcon,20,20);
-        saveIcon = scaleImageIcon(saveIcon,20,20);
-        exitIcon = scaleImageIcon(exitIcon,20,20);
         menuBar = new JMenuBar();
         fileMenu = new JMenu("File");
         algoMenu = new JMenu("Algorithms");
+        dwgMenu = new JMenu("Functions");
         loadItem = new JMenuItem("Load");
         saveItem = new JMenuItem("Save");
         exitItem = new JMenuItem("Exit");
-        initItem = new JMenuItem("init");
         isConnectedItem= new JMenuItem("isConnected");
         shortestPathDistItem = new JMenuItem("shortestPathDist");
         shortestPathItem = new JMenuItem("shortestPath");
         centerItem = new JMenuItem("center");
         tspItem = new JMenuItem("tsp");
+        addNodeItem = new JMenuItem("addNode");
+        connectItem = new JMenuItem("connect");
+        removeNodeItem = new JMenuItem("removeNode");
+        removeEdgeItem = new JMenuItem("removeEdge");
         loadItem.setIcon(loadIcon);
         saveItem.setIcon(saveIcon);
         exitItem.setIcon(exitIcon);
         fileMenu.add(loadItem);
         fileMenu.add(saveItem);
         fileMenu.add(exitItem);
-        algoMenu.add(initItem);
         algoMenu.add(isConnectedItem);
         algoMenu.add(shortestPathDistItem);
         algoMenu.add(shortestPathItem);
         algoMenu.add(centerItem);
         algoMenu.add(tspItem);
+        dwgMenu.add(addNodeItem);
+        dwgMenu.add(connectItem);
+        dwgMenu.add(removeNodeItem);
+        dwgMenu.add(removeEdgeItem);
 
 
         menuBar.add(fileMenu);
         menuBar.add(algoMenu);
+        menuBar.add(dwgMenu);
         loadItem.addActionListener(this);
         saveItem.addActionListener(this);
         exitItem.addActionListener(this);
 
-        initItem.addActionListener(this);
         isConnectedItem.addActionListener(this);
         shortestPathDistItem.addActionListener(this);
         shortestPathItem.addActionListener(this);
         centerItem.addActionListener(this);
         tspItem.addActionListener(this);
+
+        addNodeItem.addActionListener(this);
+        connectItem.addActionListener(this);
+        removeNodeItem.addActionListener(this);
+        removeEdgeItem.addActionListener(this);
         this.setJMenuBar(menuBar);
         this.setVisible(true);
 
@@ -108,11 +115,12 @@ public class GUI  extends JFrame implements KeyListener, ActionListener {
             if (i == JFileChooser.APPROVE_OPTION) {
                 File f = fc.getSelectedFile();
                 String filepath = f.getPath();
-                graph.load(filepath);
-                panel =new drawGraph(graph);
+                this.graph.load(filepath);
+                panel =new drawGraph((dwg) this.graph.getGraph());
                 this.add(panel);
                 System.out.println("you loaded a file");
-                this.reset();
+                this.repaint();
+//                this.revalidate();
             }
 
         }
@@ -124,44 +132,101 @@ public class GUI  extends JFrame implements KeyListener, ActionListener {
             System.exit(0);
         }
         if (e.getSource() == isConnectedItem) {
-            boolean isConnected = graph.isConnected();
+            boolean isConnected = this.graph.isConnected();
             JOptionPane.showMessageDialog(this, isConnected ? "The graph is connected ": "The graph isn't connected");
             System.out.println("the graph is connected? " + graph.isConnected());
         }
         if(e.getSource() == shortestPathDistItem) {
-            JButton button = new JButton("Submit");
-            this.add(button);
-            button.addActionListener(this);
-            JTextField textField = new JTextField();
-            textField.setPreferredSize(new Dimension(100, 40));
-            textField.setFont(new Font("Consolas", Font.PLAIN, 20));
-            textField.setForeground(new Color(0x00FF00));
-            textField.setBackground(Color.black);
-            textField.setCaretColor(Color.white);
-            textField.setText("Please enter a source node: ");
-            this.add(textField);
-            this.pack();
-            this.setVisible(true);
-            String src = textField.getText();
-            this.remove(textField);
+            JFrame text = new JFrame();
+            String getMessage = JOptionPane.showInputDialog(text, "Enter a source, a comma and a destination: ");
+            String cities= getMessage;
+            System.out.println(cities);
+            String[] split = cities.split(",");
+            System.out.println(Arrays.toString(split));
+            System.out.println(split.length);
+            String src = split[0];
+            String dest = split[1];
+            System.out.println(dest);
+            double distance =graph.shortestPathDist(Integer.valueOf(src), Integer.valueOf(dest));
+            System.out.println(distance);
+            JOptionPane.showMessageDialog(this,""+distance);
+        }
+        if(e.getSource() == shortestPathItem) {
+            JFrame text = new JFrame();
+            String getMessage = JOptionPane.showInputDialog(text, "Enter a source, a comma and a destination: ");
+            String cities= getMessage;
+            String[] split = cities.split(",");
+            String src = split[0];
+            String dest = split[1];
+            List<NodeData> nodes =graph.shortestPath(Integer.valueOf(src), Integer.valueOf(dest));
+            ArrayList list = new ArrayList();
+            for(int i=0; i<nodes.size();i++){
+                list.add(nodes.get(i).getKey());
+            }
+            JOptionPane.showMessageDialog(this,""+list);
+        }
+        if(e.getSource() == centerItem) {
+            Node center = (Node) graph.center();
+            JOptionPane.showMessageDialog(this, "The node center is: " + center.getKey() );
+            System.out.println("The node center is: " + center);
+        }
+        if(e.getSource() == tspItem) {
+            JFrame text = new JFrame();
+            String getMessage = JOptionPane.showInputDialog(text, "Enter a list of vertex: ");
+            String cities= getMessage;
+            String[] split = cities.split(",");
+            List<NodeData> nodes = new ArrayList<>();
+            for(int i = 0; i<split.length; i++){
+                Node curr =new Node();
+                //curr.getKey()=Integer.parseInt(split[i]);
+                nodes.add(curr);
+            }
+            List<NodeData> nodes_tsp =graph.tsp(nodes);
+            JOptionPane.showMessageDialog(this, "The path is: " + nodes_tsp );
+        }
+        if(e.getSource() == addNodeItem){
+            //JFrame text = new JFrame();
+            String getMessage = JOptionPane.showInputDialog(null, "Enter a new location and weight(x,y,weight):");
+            String location= getMessage;
+            System.out.println(location);
+            String[] split = location.split(",");
+            System.out.println(Arrays.toString(split));
+//            try {
+            double x = Double.parseDouble(split[0]);
+            double y = Double.parseDouble(split[1]);
+            double weight = Double.parseDouble(split[2]);
+            location loc = new location(x, y, 0.0);
+            Node n = new Node(loc, 0, graph.getGraph().nodeSize());
+            graph.getGraph().addNode(n);
+//            graph.getGraph().connect(graph.getGraph().nodeSize() - 1, graph.getGraph().nodeSize(), weight);
+//            panel = new drawGraph(graph);
+//            this.add(panel);
+            this.repaint();
 
-            JTextField textField1 = new JTextField();
-            textField1.setText("Please enter a destination node: ");
-            this.add(textField);
-            this.pack();
-            this.setVisible(true);
-            String dest = textField1.getText();
-            JOptionPane.showMessageDialog(this, graph.shortestPathDist(Integer.valueOf(src), Integer.valueOf(dest)));
+
+//            } catch (NumberFormatException s){
+//                System.out.println("Try again! Make sure to put in doubles.");
+//            }
+        }
+        if(e.getSource() == connectItem){
+            JFrame text = new JFrame();
+            String getMessage = JOptionPane.showInputDialog(text, "Enter two node keys and weight(x,y,weight):");
+            String location= getMessage;
+            String[] splitted = location.split(", ");
+
 
         }
 
+    }
+//    private void addNode(MouseEvent e) {
+//        double x = e.getPoint().x;
+//        double y = e.getPoint().y;
+//        location loc = new location(x, y, 0);
+//        Node node = new Node(loc, 0, graph.getGraph().nodeSize());
+//        graph.getGraph().addNode(node);
+//        this.repaint();
+//    }
 
-    }
-    public void reset(){
-        panel =new drawGraph(graph);
-        this.add(panel);
-        this.repaint();
-    }
 
     @Override
     public void keyTyped(KeyEvent e) {

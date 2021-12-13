@@ -1,5 +1,8 @@
 import api.DirectedWeightedGraph;
 import api.DirectedWeightedGraphAlgorithms;
+import api.NodeData;
+
+import java.util.List;
 
 /**
  * This class is the main class for Ex2 - your implementation will be tested using this class.
@@ -9,6 +12,11 @@ public class Ex2 {
     public static void main(String[] args) {
         DirectedWeightedGraphAlgorithms algo = getGrapgAlgo("src/data/G1.json");
         System.out.println(algo.getGraph());
+
+        System.out.println(algo.center().getKey());
+
+        GUI main = new GUI();
+//      System.out.println(algo.shortestPathDist(2,3));
 //        System.out.println("\nAFTER:\n");
 //
 //        dwg graph = dwgAlgorithm.transpose((dwg) algo);
@@ -19,8 +27,8 @@ public class Ex2 {
 //        algo.getGraph().removeEdge(0,1);
 //        boolean f=algo.isConnected();
 //        System.out.println(f);
-        Node a = (Node)algo.center();
-        System.out.println(a);
+//        Node a = (Node)algo.center();
+//        System.out.println(a);
     }
     /**
      * This static function will be used to test your implementation
@@ -42,7 +50,8 @@ public class Ex2 {
     public static DirectedWeightedGraphAlgorithms getGrapgAlgo(String json_file) {
         DirectedWeightedGraphAlgorithms ans = new dwgAlgorithm();
         ans.load(json_file);
-        ans.save("C:\\Users\\User\\IdeaProjects\\graph\\src\\gui");
+
+        //ans.save("C:\\Users\\User\\IdeaProjects\\graph\\src\\gui");
 
         return ans;
     }

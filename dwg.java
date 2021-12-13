@@ -106,13 +106,7 @@ public class dwg implements DirectedWeightedGraph {
         }
         return iterator;
     }
-//        HashMap<Point2D, EdgeData> iter =new HashMap<Point2D, EdgeData>();
-//        for (int i = 0 ; i<this.Edges.size();i++){
-//            if (this.Edges.get(i).getSrc() == node_id){
-//                Point2D p =new Point(this.Edges.get(i).getSrc(),this.Edges.get(i).getDest());
-//                iter.put(p,this.Edges.get(i));
-//            }}
-//        return iter.values().iterator();
+
 
 
     @Override

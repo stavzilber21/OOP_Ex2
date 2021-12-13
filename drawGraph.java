@@ -14,17 +14,17 @@ public class drawGraph extends JPanel{
     boolean toPrint;
     String message;
 
-    public drawGraph(dwgAlgorithm graph) {
-        super();
-        toPrint=false;
-        Nodes = new ArrayList<>();
-        Edges =new ArrayList<>();
-        this.setBackground(new Color(21, 218, 203));
-        Iterator iterNodes= graph.getGraph().nodeIter();
-        while (iterNodes.hasNext()){
-            Nodes.add((NodeData) iterNodes.next());
+    public drawGraph(dwg graph) {
+                super();
+                toPrint=false;
+                Nodes = new ArrayList<>();
+                Edges =new ArrayList<>();
+                this.setBackground(new Color(21, 218, 203));
+                Iterator iterNodes= graph.nodeIter();
+                while (iterNodes.hasNext()){
+                    Nodes.add((NodeData) iterNodes.next());
         }
-        Iterator iterEdges = graph.getGraph().edgeIter();
+        Iterator iterEdges = graph.edgeIter();
         while (iterEdges.hasNext()){
             Edges.add((EdgeData) iterEdges.next());
         }
@@ -101,6 +101,19 @@ public class drawGraph extends JPanel{
         frame.pack();
         frame.setLocationByPlatform(true);
         frame.setVisible(true);
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        paintComponent(g);
+    }
+
+
+
+    @Override
+    public void repaint() {
+        super.repaint();
     }
 
     public static void main(String[] args) {
