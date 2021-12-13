@@ -18,6 +18,45 @@ For example, the ‘isConnected’ button will print whether the graph is connec
 
 When finished, in the ‘File’ menu again, choose ‘Exit’. This will safely terminate the program.
 
+Explanation of the implementation of the departments:
+- In order to implement  the EdgeData class  we used two nodes.
+
+-The DirectedWeightedGraph we implemented with two HashMaps.
+One for the Nodes and the second for the Edges.
+We created a MC variable to count the changes in the graph.
+The key in the HashMap of vertices is an integer and the key in the HashMap of Edges is a point where symbols X is the source of the edge and Y is the destination of the edge.
+ And so by the key we will know to reach each edge and we will not get a key with 2 edges.
+We implemented all the class functions using the two HashMaps.
+
+-Then we implemented the DirectedWeightedGraphAlgorithms class.
+In this class we used a graph that we get from the DirectedWeightedGraph class.
+We implemented different functions who do different actions on the graph.
+Such as: 
+To check if the graph isConnected.
+To find the shortestPathDist between two nodes.
+To find the center in the graph.
+and to solve the TSP problem.
+
+Then we did tests for all the classes with graphs of 1000, 10000, 100000 vertices.
+
+Finally, we created a GUI class in order to draw the graph on the screen.
+The GUI class implement the JFrame class and we used in the drawGrah class that implement JPanel class.
+
+With the help of these classes we were able to see the graph on the screen. We have created buttons for each function when we click on each button the function will work and return the answer on the screen.
+
+First click on the load button to select a graph you want to see on the screen and then it will be possible to click on the other buttons.
+To see the graph on the screen, click on the “file” button again.
+
+
+If it's functions that change the graph we will see the changes on the screen - a vertex has been added or deleted or an edge will be deleted.
+
+To exit the program we can click on "file" and then on the "exit" button and the program will stop.
+
+Summary:
+To run the GUI we will run Ex2 and we will be able to run the task files using also the jar file we created.
+
+
+
 
 __Below is the project’s UML diagram, including interfaces, classes, test classes and functions:__
 
