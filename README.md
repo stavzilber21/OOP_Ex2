@@ -25,6 +25,6 @@ __Below is the project’s UML diagram, including interfaces, classes, test clas
 
 __Below is a table of our functions' runtime performances counted in milliseconds:__
 
-<img width = "350" alt = "UML" src="https://user-images.githubusercontent.com/93096648/145837156-4420e0b1-d618-4964-b1ac-1310fde801eb.png">
+<img width = "400" alt = "UML" src="https://user-images.githubusercontent.com/93096648/145837156-4420e0b1-d618-4964-b1ac-1310fde801eb.png">
 
 As shown above, we ran our functions on different graph sizes.
