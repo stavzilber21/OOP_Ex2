@@ -19,7 +19,7 @@ For example, the ‘isConnected’ button will print whether the graph is connec
 When finished, in the ‘File’ menu again, choose ‘Exit’. This will safely terminate the program.
 
 Explanation of the implementation of the departments:
-- In order to implement  the EdgeData class  we used two nodes.
+-In order to implement  the EdgeData class  we used two nodes.
 
 -The DirectedWeightedGraph we implemented with two HashMaps.
 One for the Nodes and the second for the Edges.
