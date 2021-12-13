@@ -26,7 +26,7 @@ class dwgAlgorithmTest {
     dwgAlgorithm graph_a = new dwgAlgorithm(null);
     dwgAlgorithm graph_b = new dwgAlgorithm(null);
     dwgAlgorithm graph_c = new dwgAlgorithm(null);
-
+    private long aLong;
 
 
     @Test
@@ -78,7 +78,6 @@ class dwgAlgorithmTest {
         System.out.println("That took " + (endTime - startTime) + " milliseconds");
 
         graph_c.load("C:\\Users\\User\\IdeaProjects\\graph\\src\\data\\100000.json");
-        startTime = System.currentTimeMillis();
         dwg graph3 = (dwg)graph_c.copy();
         graph_c.getGraph().equals(graph3);
         endTime = System.currentTimeMillis();
@@ -116,7 +115,7 @@ class dwgAlgorithmTest {
         System.out.println("That took " + (endTime - startTime) + " milliseconds");
         assertEquals(true,isConnected3);
 
-        graph_c.load("C:\\Users\\User\\IdeaProjects\\graph\\src\\data\\100000Nodes.json");
+        graph_c.load("C:\\Users\\User\\IdeaProjects\\graph\\src\\data\\100000.json");
         startTime = System.currentTimeMillis();
         boolean isConnected4 = graph_c.isConnected();
         endTime = System.currentTimeMillis();
@@ -238,6 +237,14 @@ class dwgAlgorithmTest {
         List<NodeData> d = Arrays.asList(graph_b.getGraph().getNode(1),graph_b.getGraph().getNode(13),graph_b.getGraph().getNode(9499),graph_b.getGraph().getNode(63),graph_b.getGraph().getNode(8460));
         startTime = System.currentTimeMillis();
         graph_b.tsp(d);
+        endTime = System.currentTimeMillis();
+        System.out.println("That took " + (endTime - startTime) + " milliseconds");
+
+
+        List<NodeData> f = Arrays.asList(graph_b.getGraph().getNode(1),graph_b.getGraph().getNode(13),graph_b.getGraph().getNode(9499),graph_b.getGraph().getNode(63),graph_b.getGraph().getNode(8460));
+        graph_c.load("C:\\Users\\User\\IdeaProjects\\graph\\src\\data\\100000Nodes.json");
+        startTime = System.currentTimeMillis();
+        double g = graph_c.shortestPathDist(216,814);
         endTime = System.currentTimeMillis();
         System.out.println("That took " + (endTime - startTime) + " milliseconds");
 
