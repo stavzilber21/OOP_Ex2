@@ -219,7 +219,7 @@ public class dwgAlgorithm implements DirectedWeightedGraphAlgorithms{
         return prev;
     }
 
-
+//
 //    @Override
 //    public NodeData center() {
 //        if (!this.isConnected()) {
@@ -256,7 +256,7 @@ public class dwgAlgorithm implements DirectedWeightedGraphAlgorithms{
         NodeData answer = null;
 
         for(int i =0; i<GRAPH.nodeSize();i++){
-            double center = centerOfNode(GRAPH.getNode(i));
+            double center = temp_center(GRAPH.getNode(i));
             if(center<min){
                 min = center;
                 answer = GRAPH.getNode(i);
@@ -265,12 +265,11 @@ public class dwgAlgorithm implements DirectedWeightedGraphAlgorithms{
         return answer;
     }
 
-    private double centerOfNode(NodeData node){
+    private double temp_center(NodeData node){
         double max = Double.MIN_VALUE;
-        //for(int i=0; i<GRAPH.nodeSize();i++){
-        for (Integer key :((dwg) this.getGraph()).getNodes().keySet()) {
-            if (key!=node.getKey()){
-                double temp = shortestPathDist(key,node.getKey());
+        for(int i=0; i<GRAPH.nodeSize();i++){
+            if (i!=node.getKey()){
+                double temp = shortestPathDist(i,node.getKey());
                 if (temp>max){
                     max = temp;
                 }

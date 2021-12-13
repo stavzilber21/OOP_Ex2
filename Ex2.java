@@ -9,38 +9,15 @@ import java.util.List;
  */
 public class Ex2 {
 
-    public static void main(String[] args) {
-        DirectedWeightedGraphAlgorithms algo = getGrapgAlgo("src/data/G1.json");
-        System.out.println(algo.getGraph());
-
-        System.out.println(algo.center().getKey());
-
-        GUI main = new GUI();
-//      System.out.println(algo.shortestPathDist(2,3));
-//        System.out.println("\nAFTER:\n");
-//
-//        dwg graph = dwgAlgorithm.transpose((dwg) algo);
-//        System.out.println(algo.getGraph());
-//        algo.getGraph().removeEdge(0,16);
-//        algo.getGraph().removeEdge(16,0);
-//        algo.getGraph().removeEdge(1,0);
-//        algo.getGraph().removeEdge(0,1);
-//        boolean f=algo.isConnected();
-//        System.out.println(f);
-//        Node a = (Node)algo.center();
-//        System.out.println(a);
-    }
     /**
      * This static function will be used to test your implementation
      * @param json_file - a json file (e.g., G1.json - G3.gson)
      * @return
      */
     public static DirectedWeightedGraph getGrapg(String json_file) {
-        DirectedWeightedGraph ans = null;
-        // ****** Add your code here ******
-        //
-        // ********************************
-        return ans;
+        dwgAlgorithm algo = new dwgAlgorithm();
+        algo.load(json_file);
+        return algo.getGraph();
     }
     /**
      * This static function will be used to test your implementation
@@ -50,10 +27,8 @@ public class Ex2 {
     public static DirectedWeightedGraphAlgorithms getGrapgAlgo(String json_file) {
         DirectedWeightedGraphAlgorithms ans = new dwgAlgorithm();
         ans.load(json_file);
-
-        //ans.save("C:\\Users\\User\\IdeaProjects\\graph\\src\\gui");
-
         return ans;
+
     }
     /**
      * This static function will run your GUI using the json fime.
@@ -62,8 +37,12 @@ public class Ex2 {
      */
     public static void runGUI(String json_file) {
         DirectedWeightedGraphAlgorithms alg = getGrapgAlgo(json_file);
-        // ****** Add your code here ******
-        //
-        // ********************************
+        GUI gui = new GUI();
+        gui.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+            runGUI(args[0]);
+        }
     }
 }
