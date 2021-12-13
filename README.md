@@ -19,10 +19,12 @@ For example, the ‘isConnected’ button will print whether the graph is connec
 When finished, in the ‘File’ menu again, choose ‘Exit’. This will safely terminate the program.
 
 
-Below is the project’s UML diagram, including interfaces, classes, test classes and functions:
+__Below is the project’s UML diagram, including interfaces, classes, test classes and functions:__
 
 <img width = "640" alt = "UML" src="https://user-images.githubusercontent.com/93096648/145727197-3d5c655b-dbed-486d-8e39-9f041900a06a.png">
 
-*Below is our runtime performances in milliseconds:*
+__Below is a table of our functions' runtime performances counted in milliseconds:__
 
+<img width = "350" alt = "UML" src="https://user-images.githubusercontent.com/93096648/145837156-4420e0b1-d618-4964-b1ac-1310fde801eb.png">
 
+As shown above, we ran our functions on different graph sizes.
