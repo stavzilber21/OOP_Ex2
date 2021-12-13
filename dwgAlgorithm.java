@@ -54,19 +54,6 @@ public class dwgAlgorithm implements DirectedWeightedGraphAlgorithms{
         return newG;
     }
 
-    public boolean isConnected1() {
-        for(int i=0; i<GRAPH.nodeSize();i++){
-            for(int j=0; j<GRAPH.nodeSize();j++){
-                if(i!=j){
-                    if(shortestPathDist(i,j)==-1){
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
 
 
     @Override
@@ -219,34 +206,6 @@ public class dwgAlgorithm implements DirectedWeightedGraphAlgorithms{
         return prev;
     }
 
-//
-//    @Override
-//    public NodeData center() {
-//        if (!this.isConnected()) {
-//            return null;
-//        }
-//        double max;
-//        double min = Double.MAX_VALUE;
-//        NodeData centerOfGraph = null;
-//        for (Integer me :((dwg) this.getGraph()).getNodes().keySet()) {
-//            Node node = (Node) GRAPH.getNode(me);
-//            max = Double.MIN_VALUE;
-//            for (Integer me1 :((dwg) this.getGraph()).getNodes().keySet()) {
-//                Node node1 = (Node) GRAPH.getNode(me1);
-//                if (node1.getKey() != node.getKey()) {
-//                    double temp = shortestPathDist(node.getKey(), node1.getKey());
-//                    if (temp > max) {
-//                        max = temp;
-//                    }
-//                }
-//            }
-//            if (max < min) {
-//                min = max;
-//                centerOfGraph = node;
-//            }
-//        }
-//        return centerOfGraph;
-//    }
     @Override
     public NodeData center() {
         if (!isConnected()){
@@ -290,11 +249,11 @@ public class dwgAlgorithm implements DirectedWeightedGraphAlgorithms{
         for (int i=0;i<cities.size();i++){
             copy_cities.add(cities.get(i).getKey());
         }
-        List<NodeData> little= new ArrayList<>();
+        List<NodeData> list= new ArrayList<>();
         Node temp = (Node) cities.get(0);
         result.add(GRAPH.getNode(copy_cities.get(0)));
-        copy_cities.remove(copy_cities.get(0));
-        while (!copy_cities.isEmpty()) {
+        copy_cities.remove(0);
+        while (copy_cities.size()>=1) {
             double min =Double.MAX_VALUE;
             same = -1; place = -1;
             for (int i = 0; i < copy_cities.size(); i++) {
@@ -305,19 +264,25 @@ public class dwgAlgorithm implements DirectedWeightedGraphAlgorithms{
                     place = i;
                 }
             }
-            little = shortestPath(temp.getKey(),same);
-            while(!little.isEmpty()){
-                result.add(little.get(0));
-                little.remove(0);
+
+            list = shortestPath(temp.getKey(),same);
+            while(list.size()>=1){
+                if (!(result.contains(list.get(0)))){
+                     result.add(list.get(0));;
+                }
+                list.remove(0);
             }
+
             int q = copy_cities.get(place);
             temp = (Node) GRAPH.getNode(q);
             copy_cities.remove(copy_cities.get(place));
-
+            if (copy_cities.size()==1 && !result.contains(GRAPH.getNode(same+1)))
+                result.add(GRAPH.getNode(same+1));
         }
         return result;
 
     }
+
 
     @Override
     public boolean save(String file) {

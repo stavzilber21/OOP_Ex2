@@ -3,7 +3,6 @@ import api.DirectedWeightedGraphAlgorithms;
 import api.NodeData;
 
 import java.awt.event.*;
-import java.lang.NumberFormatException;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -34,15 +33,6 @@ public class GUI  extends JFrame implements KeyListener, ActionListener {
     ImageIcon loadIcon;
     ImageIcon saveIcon;
     ImageIcon exitIcon;
-    ImageIcon initIcon;
-    ImageIcon isConnectedIcon;
-    ImageIcon shortestPathDistIcon;
-    ImageIcon shortestPathIcon;
-    ImageIcon centerIcon;
-    ImageIcon tspIcon;
-
-    JLabel isConnected;
-
 
     public GUI(DirectedWeightedGraphAlgorithms algo) {
         super();
@@ -103,7 +93,7 @@ public class GUI  extends JFrame implements KeyListener, ActionListener {
         removeNodeItem.addActionListener(this);
         removeEdgeItem.addActionListener(this);
         this.setJMenuBar(menuBar);
-        panel = new drawGraph(this.graph);
+        panel = new drawGraph( this.graph);
         this.add(panel);
         this.setVisible(true);
 
@@ -111,6 +101,7 @@ public class GUI  extends JFrame implements KeyListener, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
         if (e.getSource() == loadItem) {
             JFileChooser fc = new JFileChooser();
             fc.setCurrentDirectory(new java.io.File("./src"));
@@ -123,10 +114,10 @@ public class GUI  extends JFrame implements KeyListener, ActionListener {
 //                this.add(panel);
                 System.out.println("you loaded a file");
                 this.repaint();
-//                this.revalidate();
             }
 
         }
+
         if (e.getSource() == saveItem) {
             JFileChooser fc = new JFileChooser();
             int userSelection = fc.showSaveDialog(null);
@@ -136,54 +127,41 @@ public class GUI  extends JFrame implements KeyListener, ActionListener {
                 System.out.println("you saved a file");
             }
         }
+
         if (e.getSource() == exitItem) {
             System.exit(0);
         }
+
         if (e.getSource() == isConnectedItem) {
             boolean isConnected = this.graph.isConnected();
-            JOptionPane.showMessageDialog(this, isConnected ? "The graph is connected " : "The graph isn't connected");
-            System.out.println("the graph is connected? " + graph.isConnected());
+            JOptionPane.showMessageDialog(null, isConnected ? "The graph is connected " : "The graph isn't connected");
         }
+
         if(e.getSource() == shortestPathDistItem) {
-            JFrame text = new JFrame();
-            String getMessage = JOptionPane.showInputDialog(text, "Enter a source, a comma and a destination: ");
-            String cities = getMessage;
-            System.out.println(cities);
+            String cities = JOptionPane.showInputDialog(null, "Enter a source, a comma and a destination: ");
             String[] split = cities.split(",");
-            System.out.println(Arrays.toString(split));
-            System.out.println(split.length);
-            String src = split[0];
-            String dest = split[1];
-            System.out.println(dest);
-            double distance = graph.shortestPathDist(Integer.valueOf(src), Integer.valueOf(dest));
-            System.out.println(distance);
-            JOptionPane.showMessageDialog(this, "" + distance);
+            double distance = graph.shortestPathDist(Integer.valueOf(split[0]), Integer.valueOf(split[1]));
+            JOptionPane.showMessageDialog(null, "" + distance);
         }
+
         if (e.getSource() == shortestPathItem) {
-            JFrame text = new JFrame();
-            String getMessage = JOptionPane.showInputDialog(text, "Enter a source, a comma and a destination: ");
-            String cities = getMessage;
+            String cities = JOptionPane.showInputDialog(null, "Enter a source, a comma and a destination: ");
             String[] split = cities.split(",");
-            String src = split[0];
-            String dest = split[1];
-            List<NodeData> nodes = graph.shortestPath(Integer.valueOf(src), Integer.valueOf(dest));
+            List<NodeData> nodes = graph.shortestPath(Integer.valueOf(split[0]), Integer.valueOf(split[1]));
             ArrayList list = new ArrayList();
             for (int i = 0; i < nodes.size(); i++) {
                 list.add(nodes.get(i).getKey());
             }
-            JOptionPane.showMessageDialog(this, "" + list);
+            JOptionPane.showMessageDialog(null, "" + list);
         }
 
         if (e.getSource() == centerItem) {
             Node center = (Node) graph.center();
-            JOptionPane.showMessageDialog(this, "The node center is: " + center.getKey());
-            System.out.println("The node center is: " + center);
+            JOptionPane.showMessageDialog(null, "The node center is: " + center.getKey());
         }
 
         if (e.getSource() == tspItem) {
-            JFrame text = new JFrame();
-            String getMessage = JOptionPane.showInputDialog(text, "Enter a list of vertex: ");
-            String cities = getMessage;
+            String cities = JOptionPane.showInputDialog(null, "Enter a list of vertex: ");
             String[] split = cities.split(",");
             List<NodeData> nodes = new ArrayList<>();
             for (String i : split) {;
@@ -194,63 +172,47 @@ public class GUI  extends JFrame implements KeyListener, ActionListener {
             for (int i = 0; i < nodes_tsp.size(); i++) {
                 list.add(nodes_tsp.get(i).getKey());
             }
-            JOptionPane.showMessageDialog(this, "The path is: " + ""+list);
-            System.out.println("the tsp is worked");
+            JOptionPane.showMessageDialog(null, "The path is: " +list);
         }
-
 
         if (e.getSource() == removeNodeItem) {
-
+            String location = JOptionPane.showInputDialog(null, "Enter a node key:");
+            System.out.println(graph.getGraph().nodeSize());
+            this.graph.getGraph().removeNode(Integer.parseInt(location));
+            System.out.println(graph.getGraph().nodeSize());
+            this.repaint();
         }
 
-
         if (e.getSource() == addNodeItem) {
-            //JFrame text = new JFrame();
-            String getMessage = JOptionPane.showInputDialog(null, "Enter a new location and weight(x,y,weight):");
-            String location = getMessage;
+            String location = JOptionPane.showInputDialog(null, "Enter a new location(x,y):");
             System.out.println(location);
             String[] split = location.split(",");
             System.out.println(Arrays.toString(split));
-//        try {
             double x = Double.parseDouble(split[0]);
             double y = Double.parseDouble(split[1]);
-            double weight = Double.parseDouble(split[2]);
             location loc = new location(x, y, 0.0);
             Node n = new Node(loc, 0, graph.getGraph().nodeSize());
-            graph.getGraph().addNode(n);
-//        graph.getGraph().connect(graph.getGraph().nodeSize() - 1, graph.getGraph().nodeSize(), weight);
-//        panel = new drawGraph(graph);
-//        this.add(panel);
+            this.graph.getGraph().addNode(n);
             this.repaint();
-
-
-//        } catch (NumberFormatException s){
-//            System.out.println("Try again! Make sure to put in doubles.");
-//        }
         }
 
         if (e.getSource() == connectItem) {
-            JFrame text = new JFrame();
-            String getMessage = JOptionPane.showInputDialog(text, "Enter two node key in the graph:");
-            String location = getMessage;
+            String location = JOptionPane.showInputDialog(null, "Enter two node keys and weight(src, dest, weight):");
             String[] split = location.split(",");
-            List<NodeData> nodes = new ArrayList<>();
-            for (String i : split) {;
-                nodes.add(graph.getGraph().getNode(Integer.parseInt(i)));
-            }
-            graph.getGraph().connect(nodes.get(0).getKey(),nodes.get(1).getKey(),2);
+            this.graph.getGraph().connect(Integer.parseInt(split[0]),Integer.parseInt(split[1]),Double.parseDouble(split[2]));
+            this.repaint();
+        }
+
+        if (e.getSource() == removeEdgeItem){
+            String location = JOptionPane.showInputDialog(null, "Enter two node keys whose edge to remove(source, destination):");
+            String[] split = location.split(",");
+            System.out.println(graph.getGraph().edgeSize());
+            this.graph.getGraph().removeEdge(Integer.parseInt(split[0]),Integer.parseInt(split[1]));
+            System.out.println(graph.getGraph().edgeSize());
             this.repaint();
         }
 
 
-//    private void addNode(MouseEvent e) {
-//        double x = e.getPoint().x;
-//        double y = e.getPoint().y;
-//        location loc = new location(x, y, 0);
-//        Node node = new Node(loc, 0, graph.getGraph().nodeSize());
-//        graph.getGraph().addNode(node);
-//        this.repaint();
-//    }
     }
 
     @Override

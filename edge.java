@@ -64,16 +64,16 @@ public class edge implements EdgeData {
         this.tag=t;
     }
 
-//    @Override
-//    public String toString() {
-//        return "edge{" +
-//                "src=" + src +
-//                ", dest=" + dest +
-//                ", weight=" + weight +
-//                ", tag=" + tag +
-//                ", info='" + info + '\'' +
-//                '}';
-//    }
+    @Override
+    public String toString() {
+        return "edge{" +
+                "src=" + src +
+                ", dest=" + dest +
+                ", weight=" + weight +
+                ", tag=" + tag +
+                ", info='" + info + '\'' +
+                '}';
+    }
 
     public void p(){
         System.out.println(getSrc()+" "+getDest());

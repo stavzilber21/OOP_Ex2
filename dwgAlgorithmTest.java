@@ -40,19 +40,19 @@ class dwgAlgorithmTest {
 
     @Test
     void getGraph() {
-        graph_a.load("C:\\Users\\User\\IdeaProjects\\graph\\src\\data\\1000Nodes.json");
+        graph_a.load("C:\\Users\\User\\IdeaProjects\\Ex2\\src\\data\\1000Nodes.json");
         long startTime = System.currentTimeMillis();
         assertEquals(graph_a.getGraph(),graph);
         long endTime = System.currentTimeMillis();
         System.out.println("That took " + (endTime - startTime) + " milliseconds");
 
-        graph_b.load("C:\\Users\\User\\IdeaProjects\\graph\\src\\data\\10000Nodes.json");
+        graph_b.load("C:\\Users\\User\\IdeaProjects\\Ex2\\src\\data\\10000Nodes.json");
         startTime = System.currentTimeMillis();
         assertEquals(graph_b.getGraph(),graph);
         endTime = System.currentTimeMillis();
         System.out.println("That took " + (endTime - startTime) + " milliseconds");
 
-        graph_c.load("C:\\Users\\User\\IdeaProjects\\graph\\src\\data\\100000.json");
+        graph_c.load("C:\\Users\\User\\IdeaProjects\\Ex2\\src\\data\\100000.json");
         startTime = System.currentTimeMillis();
         assertEquals(graph_c.getGraph(),graph);
         endTime = System.currentTimeMillis();
@@ -63,21 +63,21 @@ class dwgAlgorithmTest {
     @Test
     void copy(){
 
-        graph_a.load("C:\\Users\\User\\IdeaProjects\\graph\\src\\data\\1000Nodes.json");
+        graph_a.load("C:\\Users\\User\\IdeaProjects\\Ex2\\src\\data\\1000Nodes.json");
         long startTime = System.currentTimeMillis();
         dwg graph2 = (dwg)graph_a.copy();
         graph_a.getGraph().equals(graph2);
         long endTime = System.currentTimeMillis();
         System.out.println("That took " + (endTime - startTime) + " milliseconds");
 
-        graph_b.load("C:\\Users\\User\\IdeaProjects\\graph\\src\\data\\10000Nodes.json");
+        graph_b.load("C:\\Users\\User\\IdeaProjects\\Ex2\\src\\data\\10000Nodes.json");
         startTime = System.currentTimeMillis();
         dwg graph1 = (dwg)graph_b.copy();
         graph_b.getGraph().equals(graph1);
         endTime = System.currentTimeMillis();
         System.out.println("That took " + (endTime - startTime) + " milliseconds");
 
-        graph_c.load("C:\\Users\\User\\IdeaProjects\\graph\\src\\data\\100000.json");
+        graph_c.load("C:\\Users\\User\\IdeaProjects\\Ex2\\src\\data\\100000.json");
         dwg graph3 = (dwg)graph_c.copy();
         graph_c.getGraph().equals(graph3);
         endTime = System.currentTimeMillis();
@@ -87,7 +87,7 @@ class dwgAlgorithmTest {
 
     @Test
     void isConnected() {
-        graph_a.load("C:\\Users\\User\\IdeaProjects\\graph\\src\\data\\1000Nodes.json");
+        graph_a.load("C:\\Users\\User\\IdeaProjects\\Ex2\\src\\data\\1000Nodes.json");
         long startTime = System.currentTimeMillis();
         boolean isConnected0 = graph_a.isConnected();
         assertEquals(true,isConnected0);
@@ -108,14 +108,14 @@ class dwgAlgorithmTest {
         System.out.println("That took " + (endTime - startTime) + " milliseconds");
         assertEquals(true,isConnected2);
 
-        graph_b.load("C:\\Users\\User\\IdeaProjects\\graph\\src\\data\\10000Nodes.json");
+        graph_b.load("C:\\Users\\User\\IdeaProjects\\Ex2\\src\\data\\10000Nodes.json");
         startTime = System.currentTimeMillis();
         boolean isConnected3 = graph_b.isConnected();
         endTime = System.currentTimeMillis();
         System.out.println("That took " + (endTime - startTime) + " milliseconds");
         assertEquals(true,isConnected3);
 
-        graph_c.load("C:\\Users\\User\\IdeaProjects\\graph\\src\\data\\100000.json");
+        graph_c.load("C:\\Users\\User\\IdeaProjects\\Ex2\\src\\data\\100000.json");
         startTime = System.currentTimeMillis();
         boolean isConnected4 = graph_c.isConnected();
         endTime = System.currentTimeMillis();
@@ -126,7 +126,7 @@ class dwgAlgorithmTest {
     @Test
     void shortestPathDist() {
 
-        graph_a.load("C:\\Users\\User\\IdeaProjects\\graph\\src\\data\\1000Nodes.json");
+        graph_a.load("C:\\Users\\User\\IdeaProjects\\Ex2\\src\\data\\1000Nodes.json");
         long startTime = System.currentTimeMillis();
         double a = graph_a.shortestPathDist(12,900);
         long endTime = System.currentTimeMillis();
@@ -145,16 +145,16 @@ class dwgAlgorithmTest {
         System.out.println("That took " + (endTime - startTime) + " milliseconds");
         assertEquals(4197.852828481402,c);
 
-        graph_b.load("C:\\Users\\User\\IdeaProjects\\graph\\src\\data\\10000Nodes.json");
+        graph_b.load("C:\\Users\\User\\IdeaProjects\\Ex2\\src\\data\\10000Nodes.json");
         startTime = System.currentTimeMillis();
         double d = graph_b.shortestPathDist(216,814);
         endTime = System.currentTimeMillis();
         System.out.println("That took " + (endTime - startTime) + " milliseconds");
         assertEquals(999999.0,d);
 
-        graph_c.load("C:\\Users\\User\\IdeaProjects\\graph\\src\\data\\100000.json");
+        graph_c.load("C:\\Users\\User\\IdeaProjects\\Ex2\\src\\data\\100000.json");
         startTime = System.currentTimeMillis();
-        double e = graph_c.shortestPathDist(216,814);
+        double e = graph_c.shortestPathDist(2196,8147);
         endTime = System.currentTimeMillis();
         System.out.println("That took " + (endTime - startTime) + " milliseconds");
 //        assertEquals(,e);
@@ -164,13 +164,12 @@ class dwgAlgorithmTest {
     @Test
     void shortestPath() {
 
-        graph_a.load("C:\\Users\\User\\IdeaProjects\\graph\\src\\data\\1000Nodes.json");
+        graph_a.load("C:\\Users\\User\\IdeaProjects\\Ex2\\src\\data\\1000Nodes.json");
 
         long startTime = System.currentTimeMillis();
         List<NodeData> a = graph_a.shortestPath(10,999);
         long endTime = System.currentTimeMillis();
         System.out.println("That took " + (endTime - startTime) + " milliseconds");
-
 
         startTime = System.currentTimeMillis();
         List<NodeData> b =graph_a.shortestPath(600,51);
@@ -182,7 +181,7 @@ class dwgAlgorithmTest {
         endTime = System.currentTimeMillis();
         System.out.println("That took " + (endTime - startTime) + " milliseconds");
 
-        graph_b.load("C:\\Users\\User\\IdeaProjects\\graph\\src\\data\\10000Nodes.json");
+        graph_b.load("C:\\Users\\User\\IdeaProjects\\Ex2\\src\\data\\10000Nodes.json");
         startTime = System.currentTimeMillis();
         List<NodeData> d =graph_b.shortestPath(320,7399);
         endTime = System.currentTimeMillis();
@@ -193,66 +192,76 @@ class dwgAlgorithmTest {
         endTime = System.currentTimeMillis();
         System.out.println("That took " + (endTime - startTime) + " milliseconds");
 
-        graph_b.load("C:\\Users\\User\\IdeaProjects\\graph\\src\\data\\100000.json");
+        graph_c.load("C:\\Users\\User\\IdeaProjects\\Ex2\\src\\data\\100000.json");
         startTime = System.currentTimeMillis();
-        List<NodeData> f =graph_b.shortestPath(320,7399);
+        List<NodeData> f =graph_c.shortestPath(320,7399);
         endTime = System.currentTimeMillis();
         System.out.println("That took " + (endTime - startTime) + " milliseconds");
     }
 
     @Test
     void center() {
-        graph_a.load("C:\\Users\\User\\IdeaProjects\\graph\\src\\data\\1000Nodes.json");
+
+        graph_a.load("C:\\Users\\User\\IdeaProjects\\Ex2\\src\\data\\1000Nodes.json");
         long startTime = System.currentTimeMillis();
         Node a = (Node)graph_a.center();
         long endTime = System.currentTimeMillis();
         System.out.println("That took " + (endTime - startTime) + " milliseconds");
         System.out.println(a.getKey());
 
-        graph_b.load("C:\\Users\\User\\IdeaProjects\\graph\\src\\data\\10000Nodes.json");
+        graph_b.load("C:\\Users\\User\\IdeaProjects\\Ex2\\src\\data\\10000Nodes.json");
         startTime = System.currentTimeMillis();
         Node b = (Node)graph_b.center();
         endTime = System.currentTimeMillis();
         System.out.println("That took " + (endTime - startTime) + " milliseconds");
         System.out.println(b.getKey());
+
+        graph_c.load("C:\\Users\\User\\IdeaProjects\\Ex2\\src\\data\\100000.json");
+        startTime = System.currentTimeMillis();
+        Node d = (Node)graph_c.center();
+        endTime = System.currentTimeMillis();
+        System.out.println("That took " + (endTime - startTime) + " milliseconds");
+        System.out.println(d.getKey());
+
     }
 
 
     @Test
     void tsp() {
-//        graph_a.load("C:\\Users\\User\\IdeaProjects\\graph\\src\\data\\1000Nodes.json");
-//        List<NodeData> a = Arrays.asList(graph_a.getGraph().getNode(878),graph_a.getGraph().getNode(987),graph_a.getGraph().getNode(3),graph_a.getGraph().getNode(67),graph_a.getGraph().getNode(15));
-//        long startTime = System.currentTimeMillis();
-//        graph_a.tsp(a);
-//        long endTime = System.currentTimeMillis();
-//        System.out.println("That took " + (endTime - startTime) + " milliseconds");
-//
-//        List<NodeData> b = Arrays.asList(graph_a.getGraph().getNode(788),graph_a.getGraph().getNode(13),graph_a.getGraph().getNode(999),graph_a.getGraph().getNode(6),graph_a.getGraph().getNode(80));
-//        startTime = System.currentTimeMillis();
-//        graph_a.tsp(b);
-//        endTime = System.currentTimeMillis();
-//        System.out.println("That took " + (endTime - startTime) + " milliseconds");
-//
-//        graph_b.load("C:\\Users\\User\\IdeaProjects\\graph\\src\\data\\10000Nodes.json");
-//        List<NodeData> c = Arrays.asList(graph_b.getGraph().getNode(7848),graph_b.getGraph().getNode(163),graph_b.getGraph().getNode(9699),graph_b.getGraph().getNode(654),graph_b.getGraph().getNode(80));
-//        startTime = System.currentTimeMillis();
-//        graph_b.tsp(c);
-//        endTime = System.currentTimeMillis();
-//        System.out.println("That took " + (endTime - startTime) + " milliseconds");
-//
-//        List<NodeData> d = Arrays.asList(graph_b.getGraph().getNode(1),graph_b.getGraph().getNode(13),graph_b.getGraph().getNode(9499),graph_b.getGraph().getNode(63),graph_b.getGraph().getNode(8460));
-//        startTime = System.currentTimeMillis();
-//        graph_b.tsp(d);
-//        endTime = System.currentTimeMillis();
-//        System.out.println("That took " + (endTime - startTime) + " milliseconds");
-//
 
-        graph_c.load("C:\\Users\\User\\IdeaProjects\\graph\\src\\data\\100000.json");
+        graph_a.load("C:\\Users\\User\\IdeaProjects\\Ex2\\src\\data\\1000Nodes.json");
+        List<NodeData> a = Arrays.asList(graph_a.getGraph().getNode(878),graph_a.getGraph().getNode(987),graph_a.getGraph().getNode(3),graph_a.getGraph().getNode(67),graph_a.getGraph().getNode(15));
+        long startTime = System.currentTimeMillis();
+        graph_a.tsp(a);
+        long endTime = System.currentTimeMillis();
+        System.out.println("That took " + (endTime - startTime) + " milliseconds");
+
+        List<NodeData> b = Arrays.asList(graph_a.getGraph().getNode(788),graph_a.getGraph().getNode(13),graph_a.getGraph().getNode(999),graph_a.getGraph().getNode(6),graph_a.getGraph().getNode(80));
+        startTime = System.currentTimeMillis();
+        graph_a.tsp(b);
+        endTime = System.currentTimeMillis();
+        System.out.println("That took " + (endTime - startTime) + " milliseconds");
+
+        graph_b.load("C:\\Users\\User\\IdeaProjects\\Ex2\\src\\data\\10000Nodes.json");
+        List<NodeData> c = Arrays.asList(graph_b.getGraph().getNode(7848),graph_b.getGraph().getNode(163),graph_b.getGraph().getNode(9699),graph_b.getGraph().getNode(654),graph_b.getGraph().getNode(80));
+        startTime = System.currentTimeMillis();
+        graph_b.tsp(c);
+        endTime = System.currentTimeMillis();
+        System.out.println("That took " + (endTime - startTime) + " milliseconds");
+
+        List<NodeData> d = Arrays.asList(graph_b.getGraph().getNode(1),graph_b.getGraph().getNode(13),graph_b.getGraph().getNode(9499),graph_b.getGraph().getNode(63),graph_b.getGraph().getNode(8460));
+        startTime = System.currentTimeMillis();
+        graph_b.tsp(d);
+        endTime = System.currentTimeMillis();
+        System.out.println("That took " + (endTime - startTime) + " milliseconds");
+
+
+        graph_c.load("C:\\Users\\User\\IdeaProjects\\Ex2\\src\\data\\100000.json");
         List<NodeData> f = Arrays.asList(graph_c.getGraph().getNode(1),graph_c.getGraph().getNode(13),graph_c.getGraph().getNode(9499),graph_c.getGraph().getNode(63),graph_c.getGraph().getNode(8460));
-        long startTime1 = System.currentTimeMillis();
-        double g = graph_c.shortestPathDist(21600,8014);
-        long endTime1 = System.currentTimeMillis();
-        System.out.println("That took " + (endTime1 - startTime1) + " milliseconds");
+        startTime = System.currentTimeMillis();
+        graph_c.tsp(f);
+        endTime = System.currentTimeMillis();
+        System.out.println("That took " + (endTime - startTime) + " milliseconds");
 
     }
 
