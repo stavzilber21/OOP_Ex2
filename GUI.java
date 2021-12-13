@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class GUI  extends JFrame implements KeyListener, ActionListener {
     drawGraph panel;
-    dwgAlgorithm graph;
+    private DirectedWeightedGraphAlgorithms graph;
     JMenuBar menuBar;
     JMenu fileMenu;
     JMenu algoMenu;
@@ -43,12 +43,10 @@ public class GUI  extends JFrame implements KeyListener, ActionListener {
 
     JLabel isConnected;
 
-    public static void main(String[] args) {
-        new GUI();
-    }
-    public GUI() {
+
+    public GUI(DirectedWeightedGraphAlgorithms algo) {
         super();
-        graph=new dwgAlgorithm();
+        graph=algo;
 
         this.setSize(Toolkit.getDefaultToolkit().getScreenSize());
         loadIcon = new ImageIcon("./resources/load.jpg");
@@ -105,6 +103,8 @@ public class GUI  extends JFrame implements KeyListener, ActionListener {
         removeNodeItem.addActionListener(this);
         removeEdgeItem.addActionListener(this);
         this.setJMenuBar(menuBar);
+        panel = new drawGraph(this.graph);
+        this.add(panel);
         this.setVisible(true);
 
     }
@@ -113,13 +113,14 @@ public class GUI  extends JFrame implements KeyListener, ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == loadItem) {
             JFileChooser fc = new JFileChooser();
+            fc.setCurrentDirectory(new java.io.File("./src"));
             int i = fc.showOpenDialog(this);
             if (i == JFileChooser.APPROVE_OPTION) {
                 File f = fc.getSelectedFile();
                 String filepath = f.getPath();
                 this.graph.load(filepath);
-                panel = new drawGraph((dwg) this.graph.getGraph());
-                this.add(panel);
+//                panel = new drawGraph((dwg) this.graph.getGraph());
+//                this.add(panel);
                 System.out.println("you loaded a file");
                 this.repaint();
 //                this.revalidate();
@@ -136,69 +137,69 @@ public class GUI  extends JFrame implements KeyListener, ActionListener {
             }
         }
         if (e.getSource() == exitItem) {
-             System.exit(0);
-         }
+            System.exit(0);
+        }
         if (e.getSource() == isConnectedItem) {
-                boolean isConnected = this.graph.isConnected();
-                JOptionPane.showMessageDialog(this, isConnected ? "The graph is connected " : "The graph isn't connected");
-                System.out.println("the graph is connected? " + graph.isConnected());
+            boolean isConnected = this.graph.isConnected();
+            JOptionPane.showMessageDialog(this, isConnected ? "The graph is connected " : "The graph isn't connected");
+            System.out.println("the graph is connected? " + graph.isConnected());
         }
         if(e.getSource() == shortestPathDistItem) {
-                JFrame text = new JFrame();
-                String getMessage = JOptionPane.showInputDialog(text, "Enter a source, a comma and a destination: ");
-                String cities = getMessage;
-                System.out.println(cities);
-                String[] split = cities.split(",");
-                System.out.println(Arrays.toString(split));
-                System.out.println(split.length);
-                String src = split[0];
-                String dest = split[1];
-                System.out.println(dest);
-                double distance = graph.shortestPathDist(Integer.valueOf(src), Integer.valueOf(dest));
-                System.out.println(distance);
-                JOptionPane.showMessageDialog(this, "" + distance);
+            JFrame text = new JFrame();
+            String getMessage = JOptionPane.showInputDialog(text, "Enter a source, a comma and a destination: ");
+            String cities = getMessage;
+            System.out.println(cities);
+            String[] split = cities.split(",");
+            System.out.println(Arrays.toString(split));
+            System.out.println(split.length);
+            String src = split[0];
+            String dest = split[1];
+            System.out.println(dest);
+            double distance = graph.shortestPathDist(Integer.valueOf(src), Integer.valueOf(dest));
+            System.out.println(distance);
+            JOptionPane.showMessageDialog(this, "" + distance);
         }
         if (e.getSource() == shortestPathItem) {
-                JFrame text = new JFrame();
-                String getMessage = JOptionPane.showInputDialog(text, "Enter a source, a comma and a destination: ");
-                String cities = getMessage;
-                String[] split = cities.split(",");
-                String src = split[0];
-                String dest = split[1];
-                List<NodeData> nodes = graph.shortestPath(Integer.valueOf(src), Integer.valueOf(dest));
-                ArrayList list = new ArrayList();
-                for (int i = 0; i < nodes.size(); i++) {
-                    list.add(nodes.get(i).getKey());
-                }
-                JOptionPane.showMessageDialog(this, "" + list);
+            JFrame text = new JFrame();
+            String getMessage = JOptionPane.showInputDialog(text, "Enter a source, a comma and a destination: ");
+            String cities = getMessage;
+            String[] split = cities.split(",");
+            String src = split[0];
+            String dest = split[1];
+            List<NodeData> nodes = graph.shortestPath(Integer.valueOf(src), Integer.valueOf(dest));
+            ArrayList list = new ArrayList();
+            for (int i = 0; i < nodes.size(); i++) {
+                list.add(nodes.get(i).getKey());
+            }
+            JOptionPane.showMessageDialog(this, "" + list);
         }
 
         if (e.getSource() == centerItem) {
-                Node center = (Node) graph.center();
-                JOptionPane.showMessageDialog(this, "The node center is: " + center.getKey());
-                System.out.println("The node center is: " + center);
+            Node center = (Node) graph.center();
+            JOptionPane.showMessageDialog(this, "The node center is: " + center.getKey());
+            System.out.println("The node center is: " + center);
         }
 
         if (e.getSource() == tspItem) {
-             JFrame text = new JFrame();
-             String getMessage = JOptionPane.showInputDialog(text, "Enter a list of vertex: ");
-             String cities = getMessage;
-             String[] split = cities.split(",");
-             List<NodeData> nodes = new ArrayList<>();
-             for (String i : split) {;
-                 nodes.add(graph.getGraph().getNode(Integer.parseInt(i)));
-             }
-             List<NodeData> nodes_tsp = graph.tsp(nodes);
+            JFrame text = new JFrame();
+            String getMessage = JOptionPane.showInputDialog(text, "Enter a list of vertex: ");
+            String cities = getMessage;
+            String[] split = cities.split(",");
+            List<NodeData> nodes = new ArrayList<>();
+            for (String i : split) {;
+                nodes.add(graph.getGraph().getNode(Integer.parseInt(i)));
+            }
+            List<NodeData> nodes_tsp = graph.tsp(nodes);
             ArrayList list = new ArrayList();
             for (int i = 0; i < nodes_tsp.size(); i++) {
                 list.add(nodes_tsp.get(i).getKey());
             }
-             JOptionPane.showMessageDialog(this, "The path is: " + ""+list);
+            JOptionPane.showMessageDialog(this, "The path is: " + ""+list);
             System.out.println("the tsp is worked");
         }
 
 
-       if (e.getSource() == removeNodeItem) {
+        if (e.getSource() == removeNodeItem) {
 
         }
 
@@ -230,11 +231,15 @@ public class GUI  extends JFrame implements KeyListener, ActionListener {
 
         if (e.getSource() == connectItem) {
             JFrame text = new JFrame();
-//            String getMessage = JOptionPane.showInputDialog(text, "Enter two node keys and weight(x,y,weight):");
-//            String location = getMessage;
-//            String[] splitted = location.split(", ");
-
-
+            String getMessage = JOptionPane.showInputDialog(text, "Enter two node key in the graph:");
+            String location = getMessage;
+            String[] split = location.split(",");
+            List<NodeData> nodes = new ArrayList<>();
+            for (String i : split) {;
+                nodes.add(graph.getGraph().getNode(Integer.parseInt(i)));
+            }
+            graph.getGraph().connect(nodes.get(0).getKey(),nodes.get(1).getKey(),2);
+            this.repaint();
         }
 
 

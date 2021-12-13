@@ -15,7 +15,7 @@ public class Ex2 {
      * @return
      */
     public static DirectedWeightedGraph getGrapg(String json_file) {
-        dwgAlgorithm algo = new dwgAlgorithm();
+        DirectedWeightedGraphAlgorithms algo = new dwgAlgorithm();
         algo.load(json_file);
         return algo.getGraph();
     }
@@ -45,4 +45,3 @@ public class Ex2 {
             runGUI(args[0]);
         }
     }
-}
